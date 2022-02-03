@@ -14,6 +14,7 @@ public class MarkdownParseTest { //class header
     public void addition() { //method header for junit test
         assertEquals(2, 1 + 1); //tests if 2 is equivalent to 1 + 1
     }
+    @Before
     public void testGetLinks(String error_message, List<String> list_of_links, String test_file) throws IOException {
         Path fileName = Path.of(test_file);
         String contents = Files.readString(fileName);
