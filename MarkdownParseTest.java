@@ -20,7 +20,7 @@ public class MarkdownParseTest { //class header
         ArrayList<String> results = MarkdownParse.getLinks(contents);
         assertEquals(error_message, list_of_links, results);
     }
-    @Test
+    /* @Test
     public void testFile() throws IOException {
         testGetLinks("test-file.md links didn't extract correctly", List.of("https://something.com", "some-page.html"), "test-file.md");
     }
@@ -51,5 +51,5 @@ public class MarkdownParseTest { //class header
     @Test
     public void testFile8() throws IOException {
         testGetLinks("test-file8.md should have one link", List.of("a link on the first line"), "test-file8.md");
-    }
+    } */
 }
