@@ -11,8 +11,15 @@ public class MarkdownParse {
         // the next )
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
+            int backticks = markdown.indexOf("```", currentIndex);
+
             int nextOpenBracket = markdown.indexOf("[", currentIndex);
-            
+            if(backticks > -1 && backticks < nextOpenBracket) {
+                backticks = markdown.indexOf("```", backticks + 1);
+                currentIndex = backticks + 1;
+                continue;
+            }
+
             int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
             int openParen = markdown.indexOf("(", nextCloseBracket);
             //Check if text is close to being a link but not a link

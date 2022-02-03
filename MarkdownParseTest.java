@@ -38,7 +38,7 @@ public class MarkdownParseTest { //class header
     }
     @Test
     public void testFile5() throws IOException {
-        testGetLinks("test-file5.md was supposed to have no links", List.of(), "test-file5.md");
+        testGetLinks("test-file5.md should have 3 links", List.of("https://something.com", "some-page.html", "http://google.com"), "test-file5.md");
     }
     @Test
     public void testFile6() throws IOException {
