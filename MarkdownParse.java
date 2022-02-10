@@ -22,8 +22,9 @@ public class MarkdownParse {
 
             int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
             int openParen = markdown.indexOf("(", nextCloseBracket);
+
             //Check if text is close to being a link but not a link
-            if(openParen != nextCloseBracket + 1) {
+            if(openParen != nextCloseBracket + 1 && openParen != -1) {
                 currentIndex = nextOpenBracket + 1;
                 continue;
             }
