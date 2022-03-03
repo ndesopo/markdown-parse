@@ -73,20 +73,21 @@ public class MarkdownParseTest { //class header
         Path fileName = Path.of("labReport4test1.md");
         String contents = Files.readString(fileName);
         ArrayList<String> results = MarkdownParse.getLinks(contents);
-        assertEquals("labReport4test1.md links didn't extract correctly", List.of("another link", "cod[e", "code]"), results);
+        assertEquals("labReport4test1.md links didn't extract correctly", List.of("`google.com", "google.com", "ucsd.edu"), results);
     }
     @Test
     public void testLabReport4Test2() throws IOException {
         Path fileName = Path.of("labReport4test2.md");
         String contents = Files.readString(fileName);
         ArrayList<String> results = MarkdownParse.getLinks(contents);
-        assertEquals("labReport4test2.md links didn't extract correctly", List.of("nested link", "a nested parenthesized url", "some escaped [ brackets ]"), results);
+        assertEquals("labReport4test2.md links didn't extract correctly", List.of("a.com", "a.com(())", "example.com"), results);
     }
     @Test
     public void testLabReport4Test3() throws IOException {
         Path fileName = Path.of("labReport4test3.md");
         String contents = Files.readString(fileName);
         ArrayList<String> results = MarkdownParse.getLinks(contents);
-        assertEquals("labReport4test3.md links didn't extract correctly", List.of("https://www.twitter.com", "this title text is really long and takes up more than one line", "https://cse.ucsd.edu/"), results);
+        System.out.println(results.toString());
+        assertEquals("labReport4test3.md links didn't extract correctly", List.of("https://www.twitter.com","https://ucsd-cse15l-w22.github.io/", "https://cse.ucsd.edu/"), results);
     }
 }
