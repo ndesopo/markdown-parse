@@ -3,42 +3,46 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
-        ArrayList<String> toReturn = new ArrayList<>();
+        ArrayList<String> toReturn = new ArrayList<String>();
         // find the next [, then find the ], then find the (, then take up to
         // the next )
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
-            int backticks = markdown.indexOf("```", currentIndex);
-
-            int nextOpenBracket = markdown.indexOf("[", currentIndex);
-            if(backticks > -1 && backticks < nextOpenBracket) {
-                backticks = markdown.indexOf("```", backticks + 1);
-                currentIndex = backticks + 1;
-                continue;
-            }
-
-            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
-            int openParen = markdown.indexOf("(", nextCloseBracket);
-
-            //Check if text is close to being a link but not a link
-            if(openParen != nextCloseBracket + 1 && openParen != -1) {
-                currentIndex = nextOpenBracket + 1;
-                continue;
-            }
+            int openBackticks = markdown.indexOf("```", currentIndex);
+            int closeBackticks  = markdown.indexOf("```", openBackticks + 1);
+            int openBracket = markdown.indexOf("[", currentIndex);
+            int closeBracket = markdown.indexOf("]", openBracket);
+            int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
 
-            //Check if another link is in the rest of the text
-            if(nextOpenBracket == -1 || nextCloseBracket == -1 || openParen == -1 || closeParen == -1){
-                break;
+            //Components of a link must be present (already in order by default)
+            if(openBracket == -1 || closeBracket == -1 || openParen == -1 || closeParen == -1) break;
+
+            //Link is invalid if space between closeBracket and openParen
+            if(openParen != closeBracket + 1) {
+                currentIndex = openParen + 1;
+                continue;
             }
 
             //Check for image using "!" marker
-            if(nextOpenBracket >= 1 && markdown.charAt(nextOpenBracket-1) == '!') {
-                currentIndex = closeParen + 1;
+            if(openBracket >= 1 && markdown.charAt(openBracket-1) == '!') {
+                currentIndex = openBracket + 1;
                 continue;
+            }
+
+            //If both backticks are present and they "interrupt" the brackets or "surround" the link, link is invalid
+            if(openBackticks != -1 && closeBackticks != -1) {
+                System.out.println(openBackticks + "   " + closeBackticks);
+                if((openBackticks < openBracket && closeParen < closeBackticks) || 
+                (openBackticks < openBracket && openBracket < closeBackticks && closeBackticks < closeBracket) ||
+                (openBracket < openBackticks && openBackticks < closeBracket && closeParen < closeBackticks)) {
+                    currentIndex = closeBackticks + 3;
+                    continue;
+                }
             }
 
             toReturn.add(markdown.substring(openParen + 1, closeParen));
@@ -48,8 +52,9 @@ public class MarkdownParse {
     }
     public static void main(String[] args) throws IOException {
         Path fileName = Path.of(args[0]);
-        // String contents = Files.readString(fileName);
-        Map<String, List<String>> links = getLinks(fileName.toFile());
+        String contents = Files.readString(fileName);
+        //Map<String, List<String>> links = getLinks(fileName.toFile());
+        ArrayList<String> links = getLinks(contents);
         System.out.println(links);
     }
 }

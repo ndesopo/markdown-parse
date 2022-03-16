@@ -68,7 +68,7 @@ public class MarkdownParseTest { //class header
         ArrayList<String> results = MarkdownParse.getLinks(contents);
         assertEquals("test-file8.md links didn't extract correctly", List.of("a link on the first line"), results);
     }
-    @Test
+    /* @Test
     public void testLabReport4Test1() throws IOException {
         Path fileName = Path.of("labReport4test1.md");
         String contents = Files.readString(fileName);
@@ -89,5 +89,5 @@ public class MarkdownParseTest { //class header
         ArrayList<String> results = MarkdownParse.getLinks(contents);
         System.out.println(results.toString());
         assertEquals("labReport4test3.md links didn't extract correctly", List.of("https://www.twitter.com","https://ucsd-cse15l-w22.github.io/", "https://cse.ucsd.edu/"), results);
-    }
+    } */
 }
